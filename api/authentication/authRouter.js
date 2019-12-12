@@ -57,7 +57,7 @@ router.get('/spotify/callback',
 
 router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect(successfulRedirect);
+    res.redirect('/')
 })
 
 passport.serializeUser((user, done) => {

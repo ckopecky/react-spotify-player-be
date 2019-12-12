@@ -8,12 +8,8 @@ const cookieSession = require('cookie-session');
 
 
 const corsOptions = {
-    origin: [
-        "http://localhost:3000", 
-        "https://react-spotify-player.now.sh", "https://react-spotify-player-git-master.christina.now.sh", 
-        "https://react-spotify-player.christina.now.sh"
-    ],
-    credentials: true
+    origin: "http://localhost:3000",
+    credentials: true,
 }
 
 module.exports = server => {
