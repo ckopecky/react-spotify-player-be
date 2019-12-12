@@ -2,12 +2,34 @@ const express = require('express');
 const server = express();
 const middleware = require('./middleware');
 const mongooseConnect = require('./mongoose');
+const authRouter = require('./api/authentication/authRouter');
+require('./passport/passport');
+
+middleware(server);
+
+
+// routers
+
+server.use('/auth', authRouter);
+
+//port 
+
 const port = process.env.PORT || 4000;
 
 
 //apply middleware
 
-middleware(server);
+
+
+const isUserAuthenticated = (req, res, next) => {
+    if ((req.isAuthenticated(), { withCredentials: true })) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+}
+
+//connection URI
 const connection = async () => {
     try {
         await mongooseConnect.connectTo(mongooseConnect.db);
