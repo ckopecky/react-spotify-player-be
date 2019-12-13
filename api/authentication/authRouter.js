@@ -6,18 +6,25 @@ const successfulRedirect = process.env.NODE_ENV === 'production' ? process.env.P
 
 const failRedirect = process.env.NODE_ENV === 'production' ? process.env.PROD_FAILURE_REDIRECT_URI : process.env.DEV_FAILURE_REDIRECT_URI
 
-
+const isUserAuthenticated = (req, res, next) => {
+    if ((req.isAuthenticated(), { withCredentials: true })) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+}
 
 //current user endpoint
 
-router.get('/current_user', async (req, res) => {
-    // console.log(req.user, "req.user");
+router.get('/current_user', isUserAuthenticated, async (req, res) => {
+    console.log(req.user, "req.user");
         try {
             const user = await User.findOne(req.user);
             if(!user) {
                 res.status(404).send({Error: 'No user found'});
             }
             else {
+                res.setHeader('Authorization', `Bearer: ${req.user.accessToken}`);
                 res.status(200).json(user);
             }
         } catch (error) {
