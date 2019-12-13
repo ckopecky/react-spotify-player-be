@@ -25,6 +25,9 @@ const definition = {
     refreshToken: {
         type: String
     },
+    expires_in: {
+        type: Number,
+    },
     product: {
         type: String
     }
