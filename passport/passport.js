@@ -6,10 +6,10 @@ passport.use(
     new SpotifyStrategy({
         clientID: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        response_type: 'code',
         callbackURL: "/auth/spotify/callback"
     }, 
     async (accessToken, refreshToken, expires_in, profile, done) => {
-        
         try {
             const existingUser = await User.findOne({
                 displayName: profile.displayName
@@ -22,6 +22,7 @@ passport.use(
                     spotifyId: profile.id,
                     accessToken,
                     refreshToken,
+                    expires_in,
                     email: profile.emails[0].value,
                     photos: profile.photos,
                     product: profile.product
@@ -30,8 +31,8 @@ passport.use(
                 console.log(newUser, "newuser")
                 done(null, newUser);
             } else {
-                console.log(existingUser, "existing user");
-                done(null, existingUser);
+                const updatedUser = await existingUser.update({accessToken, refreshToken})
+                done(null, updatedUser);
             }
         } catch (error) {
             console.log("error in spotify strategy", error)
