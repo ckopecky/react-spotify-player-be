@@ -7,7 +7,7 @@ passport.use(
         clientID: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
         response_type: 'code',
-        callbackURL: process.env.DEV_CALLBACK || process.env.PROD_CALLBACK
+        callbackURL: process.env.NODE_ENV === 'production' ? process.env.PROD_CALLBACK : process.env.DEV_CALLBACK
     }, 
     async (accessToken, refreshToken, expires_in, profile, done) => {
         try {
