@@ -7,7 +7,7 @@ passport.use(
         clientID: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
         response_type: 'code',
-        callbackURL: "/auth/spotify/callback"
+        callbackURL: process.env.DEV_CALLBACK || process.env.PROD_CALLBACK
     }, 
     async (accessToken, refreshToken, expires_in, profile, done) => {
         try {
