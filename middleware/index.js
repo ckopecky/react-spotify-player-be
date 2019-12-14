@@ -8,7 +8,7 @@ const cookieSession = require('cookie-session');
 
 
 const corsOptions = {
-    origin: "http://localhost:3000",
+    origin: [process.env.DEV_SUCCESS_REDIRECT_URI, process.env.PROD_SUCCESS_REDIRECT_URI],
     credentials: true,
 }
 
